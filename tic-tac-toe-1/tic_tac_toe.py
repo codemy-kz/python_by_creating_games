@@ -3,7 +3,12 @@ the_board = {
     '4':' ', '5':' ', '6':' ',
     '1':' ', '2':' ', '3':' '
 }
-board_keys = [key for key in the_board]
+
+
+def create_empty_board(board):
+    board_keys = [key for key in the_board]
+    for key in board_keys:
+        board[key] = ' '
 
 def draw_the_board(board):
     print(board['7'] + '|' + board['8'] + '|' +board['9'])
@@ -88,8 +93,7 @@ def game():
 
     restart = input('Ойынды қайта жүктейсіз бе?! y/n ')
     if restart == 'y' or restart == 'Y':
-        for key in board_keys:
-            the_board[key] = ' '
+        create_empty_board(the_board)
         game()
 
 if __name__ == '__main__':
