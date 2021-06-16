@@ -51,7 +51,7 @@ def check_move_input_data():
 def game():
     turn = 'X'
     count  = 0
-    for i in range(10):
+    while count != 9:
         draw_the_board(the_board)
         print("Қәзір " + turn + " -тің жүрісі. Қай жерге баратынызды санмен көрсетіңіз (1..9)")
         move = check_move_input_data()
@@ -68,7 +68,6 @@ def game():
         
         if count >= 5:
             check = check_winner(the_board)
-            print(check)
             if check:
                 message = '\nОйын аяқталды!\n' +  turn + ' ойыншы женімпаз болды!'
                 print(message)
@@ -84,10 +83,10 @@ def game():
         
         if count == 9:
             print("\nОйын аяқталды!\n")
-            print("Тең болды!")
+            print("Жеңімпаз анықталмады!")
             break
 
-    restart = input('Ойынды қайта жүктейсіз бе?! y/n')
+    restart = input('Ойынды қайта жүктейсіз бе?! y/n ')
     if restart == 'y' or restart == 'Y':
         for key in board_keys:
             the_board[key] = ' '
