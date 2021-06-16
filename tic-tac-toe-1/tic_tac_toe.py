@@ -1,14 +1,11 @@
-the_board = {
-    '7':' ', '8':' ', '9':' ',
-    '4':' ', '5':' ', '6':' ',
-    '1':' ', '2':' ', '3':' '
-}
+import random
+
 
 
 def create_empty_board(board):
-    board_keys = [key for key in the_board]
-    for key in board_keys:
-        board[key] = ' '
+    board_keys = [key for key in board]
+    for k in board_keys:
+        board[k] = ' '
 
 def draw_the_board(board):
     print(board['7'] + '|' + board['8'] + '|' +board['9'])
@@ -23,19 +20,20 @@ def draw_the_board(board):
 def check_winner(board):
     result = False
     if board['7'] == board['8'] == board['9'] != ' ':
-        draw_the_board(board)
-        result  =True
+        result  = True
     if board['4'] == board['5'] == board['6'] != ' ':
-        draw_the_board(board)
         result = True  
     if board['1'] == board['2'] == board['3'] != ' ':
-        draw_the_board(board)
         result = True
     if board['7'] == board['5'] == board['3'] != ' ':
-        draw_the_board(board)
         result = True
-    if the_board['1'] == the_board['5'] == the_board['9'] != ' ':
-        draw_the_board(the_board)
+    if board['1'] == board['5'] == board['9'] != ' ':
+        result = True
+    if board['1'] == board['4'] == board['7'] != ' ':
+        result = True
+    if board['2'] == board['5'] == board['8'] != ' ':
+        result = True
+    if board['3'] == board['6'] == board['9'] != ' ':
         result = True
     
     return result
@@ -53,16 +51,17 @@ def check_move_input_data():
         
         
 
-def game():
-    turn = 'X'
+def game(board):
+    create_empty_board(board)
+    turn = random.choice(['X', 'O'])
     count  = 0
     while count != 9:
-        draw_the_board(the_board)
+        draw_the_board(board)
         print("Қәзір " + turn + " -тің жүрісі. Қай жерге баратынызды санмен көрсетіңіз (1..9)")
         move = check_move_input_data()
         if move:
-            if the_board[move] == ' ':
-                the_board[move] = turn
+            if board[move] == ' ':
+                board[move] = turn
                 count += 1
             else:
                 print("Кешіріңіз, бұл ұяшық толып қалған. Басқасын тандаңыз.")
@@ -72,12 +71,21 @@ def game():
             continue
         
         if count >= 5:
-            check = check_winner(the_board)
+            check = check_winner(board)
+        
             if check:
+                print(board)
+                draw_the_board(board)
                 message = '\nОйын аяқталды!\n' +  turn + ' ойыншы женімпаз болды!'
                 print(message)
                 break
-            
+
+        
+        if count == 9:
+            draw_the_board(board)
+            print("\nОйын аяқталды!\n")
+            print("Жеңімпаз анықталмады!")
+            break    
 
         if turn == 'X':
             turn = 'O'
@@ -86,20 +94,23 @@ def game():
         
 
         
-        if count == 9:
-            print("\nОйын аяқталды!\n")
-            print("Жеңімпаз анықталмады!")
-            break
 
     
 
 if __name__ == '__main__':
+
+    the_board = {
+        '7':' ', '8':' ', '9':' ',
+        '4':' ', '5':' ', '6':' ',
+        '1':' ', '2':' ', '3':' '
+    }
+
     flRunning = True
     while flRunning:
-        game()
+        game(the_board)
 
         restart = input('Ойынды қайта жүктейсіз бе?! y/n ')
         if restart == 'y' or restart == 'Y':
-            create_empty_board(the_board)
+            flRunning = True
         else:
             flRunning = False
