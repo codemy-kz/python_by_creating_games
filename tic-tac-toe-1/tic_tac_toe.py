@@ -74,7 +74,6 @@ def game(board):
             check = check_winner(board)
         
             if check:
-                print(board)
                 draw_the_board(board)
                 message = '\nОйын аяқталды!\n' +  turn + ' ойыншы женімпаз болды!'
                 print(message)
