@@ -15,7 +15,27 @@ def draw_the_board(board):
     print(board['1'] + '|' + board['2'] + '|' +board['3'])
     print('-+-+-')
 
-# draw_the_board()
+def check_winner(board):
+    result = False
+    if board['7'] == board['8'] == board['9'] != ' ':
+        draw_the_board(board)
+        result  =True
+    if board['4'] == board['5'] == board['6'] != ' ':
+        draw_the_board(board)
+        result = True  
+    if board['1'] == board['2'] == board['3'] != ' ':
+        draw_the_board(board)
+        result = True
+    if board['7'] == board['5'] == board['3'] != ' ':
+        draw_the_board(board)
+        result = True
+    if the_board['1'] == the_board['5'] == the_board['9'] != ' ':
+        draw_the_board(the_board)
+        result = True
+    
+    return result
+        
+        
 
 def game():
     turn = 'X'
@@ -33,35 +53,13 @@ def game():
         
         
         if count >= 5:
-            if the_board['7'] == the_board['8'] == the_board['9'] != ' ':
-                draw_the_board(the_board)
-                print('\nОйын аяқталды!\n')
-                print("Player " + turn + " won the game!")
+            check = check_winner(the_board)
+            print(check)
+            if check:
+                message = '\nОйын аяқталды!\n' +  turn + ' ойыншы женімпаз болды!'
+                print(message)
                 break
-
-            if the_board['4'] == the_board['5'] == the_board['6'] != ' ':
-                draw_the_board(the_board)
-                print('\nОйын аяқталды!\n')
-                print("Player " + turn + " won the game!")
-                break
-
-            if the_board['1'] == the_board['2'] == the_board['3'] != ' ':
-                draw_the_board(the_board)
-                print('\nОйын аяқталды!\n')
-                print("Player " + turn + " won the game!")
-                break
-
-            if the_board['7'] == the_board['5'] == the_board['3'] != ' ':
-                draw_the_board(the_board)
-                print('\nОйын аяқталды!\n')
-                print("Player " + turn + " won the game!")
-                break
-
-            if the_board['1'] == the_board['5'] == the_board['9'] != ' ':
-                draw_the_board(the_board)
-                print('\nОйын аяқталды!\n')
-                print("Player " + turn + " won the game!")
-                break
+            
 
         if turn == 'X':
             turn = 'O'
