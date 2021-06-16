@@ -69,10 +69,11 @@ def game():
             turn = 'X'
         
 
-
+        
         if count == 9:
             print("\nОйын аяқталды!\n")
             print("Тең болды!")
+            break
 
     restart = input('Ойынды қайта жүктейсіз бе?! y/n')
     if restart == 'y' or restart == 'Y':
