@@ -34,6 +34,17 @@ def check_winner(board):
         result = True
     
     return result
+
+def check_move_input_data():
+    value = input()
+    try:
+        value = int(value)
+        if value >= 1 and value <= 9:
+            return str(value)
+        else:
+            return False
+    except ValueError:
+        return False
         
         
 
@@ -43,14 +54,17 @@ def game():
     for i in range(10):
         draw_the_board(the_board)
         print("Қәзір " + turn + " -тің жүрісі. Қай жерге баратынызды санмен көрсетіңіз (1..9)")
-        move = input()
-        if the_board[move] == ' ':
-            the_board[move] = turn
-            count += 1
+        move = check_move_input_data()
+        if move:
+            if the_board[move] == ' ':
+                the_board[move] = turn
+                count += 1
+            else:
+                print("Кешіріңіз, бұл ұяшық толып қалған. Басқасын тандаңыз.")
+                continue
         else:
-            print("Кешіріңіз, бұл ұяшық толып қалған. Басқасын тандаңыз.")
+            print("1 мен 9-дың аралығындағы санды енгізу қажет!")
             continue
-        
         
         if count >= 5:
             check = check_winner(the_board)
