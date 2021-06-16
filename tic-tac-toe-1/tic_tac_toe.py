@@ -91,10 +91,15 @@ def game():
             print("Жеңімпаз анықталмады!")
             break
 
-    restart = input('Ойынды қайта жүктейсіз бе?! y/n ')
-    if restart == 'y' or restart == 'Y':
-        create_empty_board(the_board)
-        game()
+    
 
 if __name__ == '__main__':
-    game()
+    flRunning = True
+    while flRunning:
+        game()
+
+        restart = input('Ойынды қайта жүктейсіз бе?! y/n ')
+        if restart == 'y' or restart == 'Y':
+            create_empty_board(the_board)
+        else:
+            flRunning = False
