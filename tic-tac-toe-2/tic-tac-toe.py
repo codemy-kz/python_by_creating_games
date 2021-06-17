@@ -32,6 +32,8 @@ flRunning = True
 clicked = False
 pos = []
 player = 1
+winner = 0
+game_over = False
 
 def draw_grid():
     screen.fill(BOARD_COLOR)
@@ -52,6 +54,36 @@ def draw_board():
             y_pos += 1
         x_pos += 1
 
+def check_winner():
+    global winner
+    global game_over
+
+    y_pos = 0
+    for x in board:
+        # бағандар бойынша
+        if sum(x) == 3:
+            winner = 1
+            game_over = True
+        if sum(x) == -3:
+            winner = 2
+            game_over = True
+        # қатарлар бойынша
+        if board[0][y_pos] + board[1][y_pos] + board[2][y_pos] == 3:
+            winner = 1
+            game_over = True
+        if board[0][y_pos] + board[1][y_pos] +board[2][y_pos] == -3:
+            winner = 2
+            game_over = True
+        y_pos += 1
+    
+    # диагонал бойынша
+    if board[0][0] + board[1][1] + board[2][2] == 3 or board[2][0] + board[1][1] + board[0][2] == 3:
+        winner = 1
+        game_over = True
+    if board[0][0] + board[1][1] + board[2][2] == -3 or board[2][0] + board[1][1] + board[0][2] == -3:
+        winner = 2
+        game_over = True
+
 while flRunning:
     clock.tick(FPS)
 
@@ -62,17 +94,19 @@ while flRunning:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             flRunning = False
-        if event.type == pygame.MOUSEBUTTONDOWN and clicked == False:
-            clicked = True
-            pos = pygame.mouse.get_pos()
-            cell_x = pos[0] 
-            cell_y = pos[1] 
-            if board[cell_x // 100][cell_y // 100] == 0:
-                 board[cell_x // 100][cell_y // 100] = player
-                 player *= -1
+        if game_over == False:
+            if event.type == pygame.MOUSEBUTTONDOWN and clicked == False:
+                clicked = True
+                pos = pygame.mouse.get_pos()
+                cell_x = pos[0] 
+                cell_y = pos[1] 
+                if board[cell_x // 100][cell_y // 100] == 0:
+                    board[cell_x // 100][cell_y // 100] = player
+                    player *= -1
+                    check_winner()
 
-        if event.type == pygame.MOUSEBUTTONUP and clicked == True:
-            clicked = False
+            if event.type == pygame.MOUSEBUTTONUP and clicked == True:
+                clicked = False
             
 
     pygame.display.update()
