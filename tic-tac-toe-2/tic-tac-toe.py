@@ -17,17 +17,14 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Tic-Tac-Toe")
 font = pygame.font.SysFont(None, 40)
+again_rect = pygame.Rect(SCREEN_WIDTH // 2 - 80, SCREEN_HEIGHT // 2 + 10, 150, 50)
 
 FPS = 30
 clock = pygame.time.Clock()
 
 # айнымалылар
 line_width = 6
-board = [
-    [0, 0, 0], 
-    [0, 0, 0], 
-    [0, 0, 0]
-]
+
 
 flRunning = True
 clicked = False
@@ -35,6 +32,19 @@ pos = []
 player = 1
 winner = 0
 game_over = False
+board = []
+
+def create_empty_board(board):
+    """
+    board = [
+    [0, 0, 0], 
+    [0, 0, 0], 
+    [0, 0, 0]
+    ]
+    """
+    for x in range(3):
+        row = [0]*3
+        board.append(row)
 
 def draw_grid():
     screen.fill(BOARD_COLOR)
@@ -91,6 +101,12 @@ def draw_winner(winner):
     pygame.draw.rect(screen, GREEN, (SCREEN_WIDTH//2 - 100, SCREEN_HEIGHT//2 - 60, 250, 50))
     screen.blit(win_img, (SCREEN_WIDTH//2 - 100, SCREEN_HEIGHT//2 - 50))
 
+    again_text = "Тағы ма?!"
+    again_img = font.render(again_text, True, BLUE)
+    pygame.draw.rect(screen, GREEN, again_rect)
+    screen.blit(again_img, (SCREEN_WIDTH//2-80, SCREEN_HEIGHT//2+10))
+
+create_empty_board(board)
 while flRunning:
     clock.tick(FPS)
 
@@ -117,6 +133,17 @@ while flRunning:
             
     if game_over == True:
         draw_winner(winner)
+        if event.type == pygame.MOUSEBUTTONDOWN and clicked == False:
+            clicked = True
+        if event.type == pygame.MOUSEBUTTONUP and clicked == True:
+            clicked = False
+            pos = pygame.mouse.get_pos()
+            if again_rect.collidepoint(pos):
+                player = 1
+                winner = 0
+                game_over = False
+                board = []
+                create_empty_board(board)
 
     pygame.display.update()
 
