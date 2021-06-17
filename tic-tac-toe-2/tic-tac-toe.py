@@ -16,6 +16,7 @@ pygame.init()
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Tic-Tac-Toe")
+font = pygame.font.SysFont(None, 40)
 
 FPS = 30
 clock = pygame.time.Clock()
@@ -84,6 +85,12 @@ def check_winner():
         winner = 2
         game_over = True
 
+def draw_winner(winner):
+    win_text = str(winner) + " ойыншы жеңді!"
+    win_img = font.render(win_text, True, BLUE)
+    pygame.draw.rect(screen, GREEN, (SCREEN_WIDTH//2 - 100, SCREEN_HEIGHT//2 - 60, 250, 50))
+    screen.blit(win_img, (SCREEN_WIDTH//2 - 100, SCREEN_HEIGHT//2 - 50))
+
 while flRunning:
     clock.tick(FPS)
 
@@ -108,6 +115,8 @@ while flRunning:
             if event.type == pygame.MOUSEBUTTONUP and clicked == True:
                 clicked = False
             
+    if game_over == True:
+        draw_winner(winner)
 
     pygame.display.update()
 
