@@ -25,7 +25,7 @@ clock = pygame.time.Clock()
 # айнымалылар
 line_width = 6
 
-
+counter = 1
 flRunning = True
 clicked = False
 pos = []
@@ -68,7 +68,6 @@ def draw_board():
 def check_winner():
     global winner
     global game_over
-
     y_pos = 0
     for x in board:
         # бағандар бойынша
@@ -95,8 +94,23 @@ def check_winner():
         winner = 2
         game_over = True
 
+def check_game_over():
+    global winner
+    global game_over
+    s = 0
+    for x in board:
+        for y in x:
+            s += y
+
+    if s == 0:
+        winner = 0
+        game_over = True
+
 def draw_winner(winner):
-    win_text = str(winner) + " ойыншы жеңді!"
+    if winner == 0:
+        win_text = "Ешкім жеңбеді"
+    else:
+        win_text = str(winner) + " ойыншы жеңді!"
     win_img = font.render(win_text, True, BLUE)
     pygame.draw.rect(screen, GREEN, (SCREEN_WIDTH//2 - 100, SCREEN_HEIGHT//2 - 60, 250, 50))
     screen.blit(win_img, (SCREEN_WIDTH//2 - 100, SCREEN_HEIGHT//2 - 50))
@@ -126,6 +140,10 @@ while flRunning:
                 if board[cell_x // 100][cell_y // 100] == 0:
                     board[cell_x // 100][cell_y // 100] = player
                     player *= -1
+                    counter += 1
+                    if counter == 9:
+                        check_game_over()
+                    
                     check_winner()
 
             if event.type == pygame.MOUSEBUTTONUP and clicked == True:
@@ -143,6 +161,7 @@ while flRunning:
                 winner = 0
                 game_over = False
                 board = []
+                counter = 1
                 create_empty_board(board)
 
     pygame.display.update()
