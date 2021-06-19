@@ -1,6 +1,7 @@
 import pygame
 import sys
 import random
+import numpy as np
 
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600
@@ -14,6 +15,8 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
 LINE_WIDTH = 10
+BOARD_ROWS = 3
+BOARD_COLS = 3
 
 pygame.init()
 
@@ -29,11 +32,24 @@ def draw_board():
         pygame.draw.line(screen, (LINE_COLOR), (0, x*200), (SCREEN_WIDTH, x*200), LINE_WIDTH)    
         pygame.draw.line(screen, (LINE_COLOR), (x*200, 0), (x*200, SCREEN_HEIGHT), LINE_WIDTH)
 
-board = [
-    [0, 0, 0], 
-    [0, 0, 0], 
-    [0, 0, 0]
-]
+board = np.zeros((BOARD_ROWS, BOARD_COLS))
+
+def mark_square(row, col, player):
+    board[row][col] = player
+
+def available_square(row, col):
+    return board[row][col] == 0
+
+def is_board_full():
+    for row in range(BOARD_ROWS):
+        for col in range(BOARD_COLS):
+            if board[row][col] == 0:
+                return False
+    return True
+    
+
+
+
 
 flRunning = True
 
