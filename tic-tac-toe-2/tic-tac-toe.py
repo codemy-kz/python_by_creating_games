@@ -1,16 +1,19 @@
 import pygame
-from pygame.locals import *
+import sys
 import random
 
-SCREEN_WIDTH = 300
-SCREEN_HEIGHT = 300
+SCREEN_WIDTH = 600
+SCREEN_HEIGHT = 600
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-BOARD_COLOR = (255, 255, 200)
+BOARD_COLOR = (28, 170, 156)
+LINE_COLOR = (23, 145, 135)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
+
+LINE_WIDTH = 10
 
 pygame.init()
 
@@ -20,12 +23,11 @@ pygame.display.set_caption("Tic-Tac-Toe")
 FPS = 30
 clock = pygame.time.Clock()
 
-line_width = 6
 def draw_board():
     screen.fill(BOARD_COLOR)
     for x in range(1,3):
-        pygame.draw.line(screen, (BLACK), (0, x*100), (SCREEN_WIDTH, x*100), line_width)    
-        pygame.draw.line(screen, (BLACK), (x*100, 0), (x*100, SCREEN_HEIGHT), line_width)
+        pygame.draw.line(screen, (LINE_COLOR), (0, x*200), (SCREEN_WIDTH, x*200), LINE_WIDTH)    
+        pygame.draw.line(screen, (LINE_COLOR), (x*200, 0), (x*200, SCREEN_HEIGHT), LINE_WIDTH)
 
 board = [
     [0, 0, 0], 
