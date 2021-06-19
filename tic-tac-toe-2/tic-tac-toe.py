@@ -61,24 +61,81 @@ def is_board_full():
                 return False
     return True
     
+def check_win(player):
+    for col in range(BOARD_COLS):
+        if board[0][col] == board[1][col] == board[2][col] == player:
+            draw_vertical_winning_line(col, player)
+            return True
+    for row in range(BOARD_ROWS):
+        if board[row][0] == board[row][1] == board[row][2] == player:
+            draw_horizontal_winning_line(row, player)
+            return True
+    
+    if board[0][0] == board[1][1] == board[2][2] == player:
+        draw_des_diagonal(player)
+        return True
+    if board[0][2] == board[1][1] == board[2][0] == player:
+        draw_asc_diagonal(player)
+        return True
+    
+    return False 
 
+def draw_vertical_winning_line(col, player):
+    if player == 1:
+        color = CIRCLE_COLOR
+    elif player == 2:
+        color = CROSS_COLOR
+    pygame.draw.line(screen, color, (col*200+200/2, 15), (col*200+200/2, SCREEN_HEIGHT-15), 15)
+
+def draw_horizontal_winning_line(row, player):
+    if player == 1:
+        color = CIRCLE_COLOR
+    elif player == 2:
+        color = CROSS_COLOR
+    pygame.draw.line(screen, color, (15, row*200+200/2), (SCREEN_WIDTH-15, row*200+200/2), 15)
+
+def draw_asc_diagonal(player):
+    if player == 1:
+        color = CIRCLE_COLOR
+    elif player == 2:
+        color = CROSS_COLOR
+    pygame.draw.line(screen, color, (15, SCREEN_HEIGHT-15, ), (SCREEN_WIDTH-15, 15), 15)
+    
+
+def draw_des_diagonal(player):
+    if player == 1:
+        color = CIRCLE_COLOR
+    elif player == 2:
+        color = CROSS_COLOR
+    pygame.draw.line(screen, color, (15, 15), (SCREEN_WIDTH-15, SCREEN_HEIGHT-15), 15)
+
+def restart():
+    # screen.fill(BOARD_COLOR)
+    draw_board()
+    global game_over 
+    game_over = False
+    player = random.choice([1, 2])
+    for row in range(BOARD_ROWS):
+        for col in range(BOARD_COLS):
+            board[row][col] = 0
 
 
 
 flRunning = True
+game_over = False
 
 player = random.choice([1, 2])
 
+draw_board()
 while flRunning:
     clock.tick(FPS)
 
 
-    draw_board()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             flRunning = False
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN and not game_over:
             mouseX = event.pos[0]
             mouseY = event.pos[1]
             
@@ -87,15 +144,21 @@ while flRunning:
             # print(clicked_row, clicked_col)
 
             if available_square(clicked_row, clicked_col):
-                mark_square(clicked_row, clicked_col, player)
-                
                 if player == 1:
+                    mark_square(clicked_row, clicked_col, player)
+                    game_over = check_win(player)
                     player = 2
                 elif player == 2:
+                    mark_square(clicked_row, clicked_col, player)
+                    game_over = check_win(player)
                     player = 1
-            
-    draw_figures()
-    print(board)
+                            
+                draw_figures()
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_r:
+                restart()
+
     pygame.display.update()
 
 pygame.quit()
